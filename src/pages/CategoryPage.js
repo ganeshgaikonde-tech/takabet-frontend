@@ -14,9 +14,10 @@ const CategoryPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
 
-  useEffect(() => {
-    fetchCategoryAndPosts();
-  }, [slug, currentPage]);
+useEffect(() => {
+  fetchCategoryAndPosts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+}, [slug, currentPage]);
 
   const fetchCategoryAndPosts = async () => {
     try {
