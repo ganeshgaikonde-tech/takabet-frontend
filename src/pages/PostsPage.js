@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import Pagination from '../components/Pagination';
 import { getPosts } from '../services/api';
@@ -11,10 +10,10 @@ const PostsPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
-  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     fetchPosts(currentPage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   const fetchPosts = async (page) => {
