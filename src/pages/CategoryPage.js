@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
 import PostCard from '../components/PostCard';
 import Pagination from '../components/Pagination';
@@ -14,12 +14,7 @@ const CategoryPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalPosts, setTotalPosts] = useState(0);
 
-useEffect(() => {
-  fetchCategoryAndPosts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-}, [slug, currentPage]);
-
-  const fetchCategoryAndPosts = async () => {
+  const fetchCategoryAndPosts = useCallback(async () => {
     try {
       setLoading(true);
       const [catResponse, postsResponse] = await Promise.all([
@@ -37,7 +32,11 @@ useEffect(() => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug, currentPage]);
+
+  useEffect(() => {
+    fetchCategoryAndPosts();
+  }, [fetchCategoryAndPosts]);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
