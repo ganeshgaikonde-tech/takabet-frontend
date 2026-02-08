@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaEye, FaClock, FaUser, FaTag } from 'react-icons/fa';
 import { getPostBySlug, getPosts } from '../services/api';
@@ -11,11 +11,7 @@ const PostDetail = () => {
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchPost();
-  }, [slug]);
-
-  const fetchPost = async () => {
+  const fetchPost = useCallback(async () => {
     try {
       setLoading(true);
       const response = await getPostBySlug(slug);
@@ -34,7 +30,11 @@ const PostDetail = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [slug]);
+
+  useEffect(() => {
+    fetchPost();
+  }, [fetchPost]);
 
   const formatDate = (date) => {
     return new Date(date).toLocaleDateString('en-US', {
