@@ -2,7 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FaEye, FaClock, FaUser, FaTag } from 'react-icons/fa';
 import { getPostBySlug, getPosts } from '../services/api';
-import PostCard from '../components/PostCard';
 import './PostDetail.css';
 
 const PostDetail = () => {
