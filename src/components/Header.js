@@ -19,9 +19,16 @@ const Header = () => {
   const fetchCategories = async () => {
     try {
       const response = await getCategories();
-      setCategories(response.data);
+      // Ensure categories is always an array
+      if (response.data && Array.isArray(response.data)) {
+        setCategories(response.data);
+      } else {
+        console.error('Categories is not an array:', response.data);
+        setCategories([]);
+      }
     } catch (error) {
       console.error('Error fetching categories:', error);
+      setCategories([]); // Set empty array on error
     }
   };
 
@@ -111,16 +118,22 @@ const Header = () => {
             <li>
               <Link to="/" onClick={() => setMenuOpen(false)}>Home</Link>
             </li>
-            {categories.slice(0, 5).map((category) => (
-              <li key={category._id}>
-                <Link 
-                  to={`/category/${category.slug}`}
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {category.icon} {category.name}
-                </Link>
+            {Array.isArray(categories) && categories.length > 0 ? (
+              categories.slice(0, 5).map((category) => (
+                <li key={category._id}>
+                  <Link 
+                    to={`/category/${category.slug}`}
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    {category.icon} {category.name}
+                  </Link>
+                </li>
+              ))
+            ) : (
+              <li>
+                <span style={{ color: '#b8b8b8' }}>Loading categories...</span>
               </li>
-            ))}
+            )}
           </ul>
         </div>
       </nav>
